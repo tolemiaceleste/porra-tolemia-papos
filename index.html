@@ -44,6 +44,14 @@
     .sponsor-banner img { height: 28px; object-fit: contain; }
     .sponsor-text strong { color: var(--rojo-papos); }
     .sponsor-sub { font-size: 0.76rem; color: var(--gris); display: block; margin-top: 2px; }
+    .sync-bar {
+      text-align: right; font-size: 0.78rem; color: var(--gris);
+      margin: -6px 4px 10px; min-height: 18px;
+    }
+    .sync-btn {
+      background: none; border: none; color: var(--azul); font-size: 0.78rem;
+      font-weight: 600; cursor: pointer; padding: 0;
+    }
     .tabs { display: flex; gap: 8px; margin-bottom: 14px; }
     .tab-btn {
       flex: 1; padding: 11px; border: none; border-radius: 10px;
@@ -102,7 +110,7 @@
 <body>
   <header>
     <div class="header-brand">
-      <img id="imgTolemia" class="logo-peña hidden" alt="Tolemia Celeste">
+      <img id="imgTolemia" class="logo-peña" src="logo-tolemia.png" alt="Tolemia Celeste">
       <div><h1>Porra Tolemia Celeste</h1></div>
     </div>
     <p>Clasificación mensual e pronósticos por partido</p>
@@ -111,7 +119,7 @@
 
   <div class="container">
     <div class="sponsor-banner">
-      <img id="imgPapos" class="hidden" alt="Papos">
+      <img id="imgPapos" src="logo-papos.png" alt="Papos">
       <div class="sponsor-text">
         Premio mensual: <strong>Menú dobre completo en Papos</strong>
         <span class="sponsor-sub">📍 Rúa Venezuela, 10 · Para o socio con máis acertos do mes</span>
@@ -129,6 +137,8 @@
     <div id="loader" class="hidden">Cargando datos da porra...</div>
 
     <div id="app" class="hidden">
+      <div id="syncBar" class="sync-bar"></div>
+
       <div class="tabs">
         <button class="tab-btn active" onclick="cambiarTab('clasificacion', this)">🏆 Clasificación</button>
         <button class="tab-btn" onclick="cambiarTab('partidos', this)">📋 Porras por partido</button>
@@ -167,6 +177,8 @@
 
   <script>
     const API_URL = 'https://script.google.com/macros/s/AKfycbzoaT5B5kQwmJ5eyAhPPQDQjbTPDM9tDvYZvjNtkOKQyV0S3xj0y_PELNZFUY7OfdxLxg/exec';
+    const STORAGE_CLAVE = 'clave_porra_tolemia';
+    const STORAGE_CACHE = 'cache_datos_porra_tolemia';
     let DATA = null;
 
     const MESES_GL = [
@@ -181,10 +193,31 @@
       return (MESES_GL[idx] ? MESES_GL[idx] : partes[1]) + ' ' + partes[0];
     }
 
-    function cargarConClave(clave) {
-      document.getElementById('loginBox').classList.add('hidden');
-      document.getElementById('loginError').classList.add('hidden');
-      document.getElementById('loader').classList.remove('hidden');
+    function ponerEstadoSync(estado) {
+      const bar = document.getElementById('syncBar');
+      if (!bar) return;
+      if (estado === 'cargando') {
+        bar.innerHTML = '⏳ Actualizando datos...';
+      } else if (estado === 'error') {
+        bar.innerHTML = '⚠️ Sen conexión · <button class="sync-btn" onclick="refrescarManual()">Reintentar</button>';
+      } else {
+        bar.innerHTML = '<button class="sync-btn" onclick="refrescarManual()">🔄 Actualizar</button>';
+      }
+    }
+
+    function refrescarManual() {
+      const clave = localStorage.getItem(STORAGE_CLAVE);
+      if (clave) cargarConClave(clave, true);
+    }
+
+    function cargarConClave(clave, enSegundoPlano) {
+      if (!enSegundoPlano) {
+        document.getElementById('loginBox').classList.add('hidden');
+        document.getElementById('loginError').classList.add('hidden');
+        document.getElementById('loader').classList.remove('hidden');
+      } else {
+        ponerEstadoSync('cargando');
+      }
 
       fetch(API_URL + '?key=' + encodeURIComponent(clave))
         .then(res => {
@@ -193,36 +226,64 @@
         })
         .then(data => {
           if (data.error) {
-            localStorage.removeItem('clave_porra_tolemia');
+            localStorage.removeItem(STORAGE_CLAVE);
+            localStorage.removeItem(STORAGE_CACHE);
             document.getElementById('loader').classList.add('hidden');
+            document.getElementById('app').classList.add('hidden');
+            document.getElementById('linkForm').classList.add('hidden');
             document.getElementById('loginBox').classList.remove('hidden');
             const errBox = document.getElementById('loginError');
             errBox.innerText = data.error;
             errBox.classList.remove('hidden');
             return;
           }
-          localStorage.setItem('clave_porra_tolemia', clave);
+          localStorage.setItem(STORAGE_CLAVE, clave);
+          try {
+            localStorage.setItem(STORAGE_CACHE, JSON.stringify(data));
+          } catch (e) {}
           inicializar(data);
+          ponerEstadoSync('listo');
         })
         .catch(err => {
-          document.getElementById('loader').innerText = 'Erro ao cargar os datos: ' + err.message;
+          if (enSegundoPlano) {
+            ponerEstadoSync('error');
+          } else {
+            document.getElementById('loader').innerText = 'Erro ao cargar os datos: ' + err.message;
+          }
         });
     }
 
     function enviarClave() {
       const clave = document.getElementById('inputClave').value.trim();
       if (!clave) return;
-      cargarConClave(clave);
+      cargarConClave(clave, false);
     }
 
-    const claveGuardada = localStorage.getItem('clave_porra_tolemia');
+    // Arranque instantáneo: si hay clave y caché local, pinta en 0 ms y actualiza por detrás
+    const claveGuardada = localStorage.getItem(STORAGE_CLAVE);
     if (claveGuardada) {
-      cargarConClave(claveGuardada);
+      let cacheValida = null;
+      try {
+        const raw = localStorage.getItem(STORAGE_CACHE);
+        if (raw) cacheValida = JSON.parse(raw);
+      } catch (e) {}
+
+      if (cacheValida && cacheValida.meses) {
+        inicializar(cacheValida);
+        cargarConClave(claveGuardada, true);
+      } else {
+        cargarConClave(claveGuardada, false);
+      }
     } else {
       document.getElementById('loginBox').classList.remove('hidden');
     }
 
     function inicializar(data) {
+      const selMes = document.getElementById('selectMes');
+      const selPart = document.getElementById('selectPartido');
+      const mesPrevio = DATA ? selMes.value : null;
+      const partidoPrevio = DATA ? selPart.value : null;
+
       DATA = data;
       document.getElementById('loader').classList.add('hidden');
       document.getElementById('app').classList.remove('hidden');
@@ -233,35 +294,30 @@
         linkForm.classList.remove('hidden');
       }
 
-      if (data.logoTolemiaUrl) {
-        const imgT = document.getElementById('imgTolemia');
-        imgT.src = data.logoTolemiaUrl;
-        imgT.classList.remove('hidden');
-      }
-      if (data.logoPaposUrl) {
-        const imgP = document.getElementById('imgPapos');
-        imgP.src = data.logoPaposUrl;
-        imgP.classList.remove('hidden');
-      }
-
-      const selMes = document.getElementById('selectMes');
       if (data.meses.length === 0) {
         selMes.innerHTML = '<option value="">Sen meses dispoñibles</option>';
       } else {
         const hoy = new Date();
         const mesActual = hoy.getFullYear() + '-' + String(hoy.getMonth() + 1).padStart(2, '0');
         selMes.innerHTML = data.meses.map(m => `<option value="${m}">${formatearMes(m)}</option>`).join('');
-        if (data.meses.includes(mesActual)) selMes.value = mesActual;
+        if (mesPrevio && data.meses.includes(mesPrevio)) {
+          selMes.value = mesPrevio;
+        } else if (data.meses.includes(mesActual)) {
+          selMes.value = mesActual;
+        }
       }
 
-      const selPart = document.getElementById('selectPartido');
       if (data.partidos.length === 0) {
         selPart.innerHTML = '<option value="">Sen partidos dispoñibles</option>';
       } else {
         selPart.innerHTML = data.partidos.map(p => `<option value="${escapeHtml(p.nombre)}">${escapeHtml(p.nombre)}</option>`).join('');
-        const iniciados = data.partidos.filter(p => p.iniciado);
-        if (iniciados.length > 0) {
-          selPart.value = iniciados[iniciados.length - 1].nombre;
+        if (partidoPrevio && data.partidos.some(p => p.nombre === partidoPrevio)) {
+          selPart.value = partidoPrevio;
+        } else {
+          const iniciados = data.partidos.filter(p => p.iniciado);
+          if (iniciados.length > 0) {
+            selPart.value = iniciados[iniciados.length - 1].nombre;
+          }
         }
       }
 

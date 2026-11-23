@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="gl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Porra Tolemia Celeste</title>
+  <style>
+    :root {
+      --celeste: #8AC3EE;
+      --azul: #0066B3;
+      --azul-oscuro: #162436;
+      --rojo-papos: #D92332;
+      --fondo: #F2F7FB;
+      --texto: #1E293B;
+      --gris: #64748B;
+      --verde: #16A34A;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    body { background: var(--fondo); color: var(--texto); padding-bottom: 44px; }
+    header {
+      background: linear-gradient(135deg, var(--azul-oscuro) 0%, var(--azul) 60%, var(--celeste) 100%);
+      color: white; text-align: center; padding: 20px 16px 18px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.16);
+    }
+    .header-brand { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 8px; }
+    .logo-peña {
+      width: 54px; height: 54px; object-fit: contain; border-radius: 50%;
+      background: white; padding: 3px; box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+    }
+    header h1 { font-size: 1.38rem; letter-spacing: 0.3px; }
+    header p { font-size: 0.88rem; opacity: 0.92; margin-bottom: 14px; }
+    .btn-porra {
+      display: inline-block; background: var(--rojo-papos); color: white;
+      text-decoration: none; font-weight: 700; font-size: 0.92rem;
+      padding: 9px 20px; border-radius: 22px; box-shadow: 0 3px 8px rgba(0,0,0,0.22);
+    }
+    .container { max-width: 680px; margin: 16px auto; padding: 0 12px; }
+    .sponsor-banner {
+      display: flex; align-items: center; justify-content: center; gap: 12px;
+      background: white; border-left: 4px solid var(--rojo-papos);
+      border-radius: 10px; padding: 10px 14px; margin-bottom: 14px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06); font-size: 0.85rem;
+    }
+    .sponsor-banner img { height: 28px; object-fit: contain; }
+    .sponsor-text strong { color: var(--rojo-papos); }
+    .sponsor-sub { font-size: 0.76rem; color: var(--gris); display: block; margin-top: 2px; }
+    .tabs { display: flex; gap: 8px; margin-bottom: 14px; }
+    .tab-btn {
+      flex: 1; padding: 11px; border: none; border-radius: 10px;
+      background: white; color: var(--gris); font-weight: 600; font-size: 0.94rem;
+      cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.08); transition: 0.2s;
+    }
+    .tab-btn.active { background: var(--azul-oscuro); color: white; }
+    .card {
+      background: white; border-radius: 12px; padding: 16px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.06); margin-bottom: 14px;
+    }
+    label { display: block; font-size: 0.78rem; font-weight: 700; color: var(--gris); margin-bottom: 6px; text-transform: uppercase; }
+    select, .search-input {
+      width: 100%; padding: 10px 12px; border: 1.5px solid #CBD5E1; border-radius: 8px;
+      font-size: 0.95rem; background: #fff; color: var(--texto);
+    }
+    .search-input { margin-top: 10px; font-size: 0.9rem; }
+    .stats { display: flex; gap: 10px; margin-top: 14px; }
+    .stat-box { flex: 1; background: var(--fondo); border-radius: 8px; padding: 10px; text-align: center; }
+    .stat-num { font-size: 1.35rem; font-weight: 800; color: var(--azul); }
+    .stat-lbl { font-size: 0.75rem; color: var(--gris); margin-top: 2px; }
+    .marcador-real {
+      margin-top: 12px; padding: 10px; border-radius: 8px; text-align: center;
+      background: #E0F2FE; color: var(--azul-oscuro); font-weight: 700; font-size: 0.92rem;
+    }
+    .locked-box { text-align: center; padding: 28px 14px; color: var(--azul-oscuro); }
+    .locked-box .lock-icon { font-size: 2rem; margin-bottom: 8px; }
+    .locked-box p { font-size: 0.92rem; color: var(--gris); margin-top: 6px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 4px; }
+    th {
+      text-align: left; font-size: 0.76rem; color: var(--gris); text-transform: uppercase;
+      padding: 10px 8px; border-bottom: 2px solid #E2E8F0;
+    }
+    td { padding: 11px 8px; border-bottom: 1px solid #F1F5F9; font-size: 0.93rem; }
+    tr:last-child td { border-bottom: none; }
+    .num { text-align: center; font-weight: 600; }
+    .acierto-badge {
+      display: inline-block; background: #DCFCE7; color: var(--verde);
+      font-weight: 700; padding: 2px 9px; border-radius: 12px; font-size: 0.85rem;
+    }
+    .empty { text-align: center; color: var(--gris); padding: 26px 10px; font-size: 0.94rem; }
+    .hidden { display: none; }
+    #loader { text-align: center; padding: 50px 16px; color: var(--azul); font-weight: 600; }
+    .login-box { max-width: 360px; margin: 36px auto; text-align: center; }
+    .login-box input {
+      width: 100%; padding: 11px 12px; border: 1.5px solid #CBD5E1; border-radius: 8px;
+      font-size: 1rem; margin: 12px 0; text-align: center;
+    }
+    .login-box button {
+      width: 100%; padding: 11px; border: none; border-radius: 8px;
+      background: var(--azul-oscuro); color: white; font-weight: 700; font-size: 0.95rem; cursor: pointer;
+    }
+    .login-error { color: var(--rojo-papos); font-size: 0.85rem; margin-top: 10px; font-weight: 600; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-brand">
+      <img id="imgTolemia" class="logo-peña hidden" alt="Tolemia Celeste">
+      <div><h1>Porra Tolemia Celeste</h1></div>
+    </div>
+    <p>Clasificación mensual e pronósticos por partido</p>
+    <a id="linkForm" class="btn-porra hidden" href="#" target="_blank">⚽ Facer a miña porra</a>
+  </header>
+
+  <div class="container">
+    <div class="sponsor-banner">
+      <img id="imgPapos" class="hidden" alt="Papos">
+      <div class="sponsor-text">
+        Premio mensual: <strong>Menú dobre completo en Papos</strong>
+        <span class="sponsor-sub">📍 Rúa Venezuela, 10 · Para o socio con máis acertos do mes</span>
+      </div>
+    </div>
+
+    <div id="loginBox" class="card login-box hidden">
+      <h3>🔒 Acceso exclusivo socios</h3>
+      <p style="font-size:0.86rem; color:var(--gris); margin-top:6px;">Introduce a clave da peña para ver a porra</p>
+      <input id="inputClave" type="password" placeholder="Contrasinal" onkeydown="if(event.key==='Enter') enviarClave()">
+      <button onclick="enviarClave()">Entrar</button>
+      <div id="loginError" class="login-error hidden"></div>
+    </div>
+
+    <div id="loader" class="hidden">Cargando datos da porra...</div>
+
+    <div id="app" class="hidden">
+      <div class="tabs">
+        <button class="tab-btn active" onclick="cambiarTab('clasificacion', this)">🏆 Clasificación</button>
+        <button class="tab-btn" onclick="cambiarTab('partidos', this)">📋 Porras por partido</button>
+      </div>
+
+      <div id="tab-clasificacion">
+        <div class="card">
+          <label for="selectMes">Mes</label>
+          <select id="selectMes" onchange="renderClasificacion()"></select>
+          <input id="searchClasif" class="search-input" type="text" placeholder="🔍 Buscar socio..." oninput="renderClasificacion()">
+          <div class="stats">
+            <div class="stat-box">
+              <div class="stat-num" id="statParticipantes">0</div>
+              <div class="stat-lbl">Participantes</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-num" id="statAciertos">0</div>
+              <div class="stat-lbl">Acertos totais</div>
+            </div>
+          </div>
+        </div>
+        <div class="card" id="tablaClasificacion"></div>
+      </div>
+
+      <div id="tab-partidos" class="hidden">
+        <div class="card">
+          <label for="selectPartido">Partido</label>
+          <select id="selectPartido" onchange="renderPartido()"></select>
+          <input id="searchPartido" class="search-input" type="text" placeholder="🔍 Buscar socio..." oninput="renderPartido()">
+          <div id="marcadorBox" class="marcador-real hidden"></div>
+        </div>
+        <div class="card" id="tablaPartido"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const API_URL = 'https://script.google.com/macros/s/AKfycbzoaT5B5kQwmJ5eyAhPPQDQjbTPDM9tDvYZvjNtkOKQyV0S3xj0y_PELNZFUY7OfdxLxg/exec';
+    let DATA = null;
+
+    const MESES_GL = [
+      'Xaneiro', 'Febreiro', 'Marzo', 'Abril', 'Maio', 'Xuño',
+      'Xullo', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Decembro'
+    ];
+
+    function formatearMes(ym) {
+      const partes = String(ym || '').split('-');
+      if (partes.length !== 2) return ym;
+      const idx = parseInt(partes[1], 10) - 1;
+      return (MESES_GL[idx] ? MESES_GL[idx] : partes[1]) + ' ' + partes[0];
+    }
+
+    function cargarConClave(clave) {
+      document.getElementById('loginBox').classList.add('hidden');
+      document.getElementById('loginError').classList.add('hidden');
+      document.getElementById('loader').classList.remove('hidden');
+
+      fetch(API_URL + '?key=' + encodeURIComponent(clave))
+        .then(res => {
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+          return res.json();
+        })
+        .then(data => {
+          if (data.error) {
+            localStorage.removeItem('clave_porra_tolemia');
+            document.getElementById('loader').classList.add('hidden');
+            document.getElementById('loginBox').classList.remove('hidden');
+            const errBox = document.getElementById('loginError');
+            errBox.innerText = data.error;
+            errBox.classList.remove('hidden');
+            return;
+          }
+          localStorage.setItem('clave_porra_tolemia', clave);
+          inicializar(data);
+        })
+        .catch(err => {
+          document.getElementById('loader').innerText = 'Erro ao cargar os datos: ' + err.message;
+        });
+    }
+
+    function enviarClave() {
+      const clave = document.getElementById('inputClave').value.trim();
+      if (!clave) return;
+      cargarConClave(clave);
+    }
+
+    const claveGuardada = localStorage.getItem('clave_porra_tolemia');
+    if (claveGuardada) {
+      cargarConClave(claveGuardada);
+    } else {
+      document.getElementById('loginBox').classList.remove('hidden');
+    }
+
+    function inicializar(data) {
+      DATA = data;
+      document.getElementById('loader').classList.add('hidden');
+      document.getElementById('app').classList.remove('hidden');
+
+      if (data.formUrl) {
+        const linkForm = document.getElementById('linkForm');
+        linkForm.href = data.formUrl;
+        linkForm.classList.remove('hidden');
+      }
+
+      if (data.logoTolemiaUrl) {
+        const imgT = document.getElementById('imgTolemia');
+        imgT.src = data.logoTolemiaUrl;
+        imgT.classList.remove('hidden');
+      }
+      if (data.logoPaposUrl) {
+        const imgP = document.getElementById('imgPapos');
+        imgP.src = data.logoPaposUrl;
+        imgP.classList.remove('hidden');
+      }
+
+      const selMes = document.getElementById('selectMes');
+      if (data.meses.length === 0) {
+        selMes.innerHTML = '<option value="">Sen meses dispoñibles</option>';
+      } else {
+        const hoy = new Date();
+        const mesActual = hoy.getFullYear() + '-' + String(hoy.getMonth() + 1).padStart(2, '0');
+        selMes.innerHTML = data.meses.map(m => `<option value="${m}">${formatearMes(m)}</option>`).join('');
+        if (data.meses.includes(mesActual)) selMes.value = mesActual;
+      }
+
+      const selPart = document.getElementById('selectPartido');
+      if (data.partidos.length === 0) {
+        selPart.innerHTML = '<option value="">Sen partidos dispoñibles</option>';
+      } else {
+        selPart.innerHTML = data.partidos.map(p => `<option value="${escapeHtml(p.nombre)}">${escapeHtml(p.nombre)}</option>`).join('');
+        const iniciados = data.partidos.filter(p => p.iniciado);
+        if (iniciados.length > 0) {
+          selPart.value = iniciados[iniciados.length - 1].nombre;
+        }
+      }
+
+      renderClasificacion();
+      renderPartido();
+    }
+
+    function cambiarTab(tab, btn) {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('tab-clasificacion').classList.toggle('hidden', tab !== 'clasificacion');
+      document.getElementById('tab-partidos').classList.toggle('hidden', tab !== 'partidos');
+    }
+
+    function renderClasificacion() {
+      const mes = document.getElementById('selectMes').value;
+      const filtro = (document.getElementById('searchClasif').value || '').trim().toLowerCase();
+      const listaCompleta = (DATA.clasificaciones && DATA.clasificaciones[mes]) || [];
+      const cont = document.getElementById('tablaClasificacion');
+
+      document.getElementById('statParticipantes').innerText = listaCompleta.length;
+      document.getElementById('statAciertos').innerText = listaCompleta.reduce((s, r) => s + r.aciertos, 0);
+
+      if (listaCompleta.length === 0) {
+        cont.innerHTML = '<div class="empty">Aínda non hai participacións válidas neste mes.</div>';
+        return;
+      }
+
+      const medallas = ['🥇', '🥈', '🥉'];
+      const filas = listaCompleta
+        .map((r, i) => ({ ...r, pos: i < 3 && r.aciertos > 0 ? medallas[i] : (i + 1) }))
+        .filter(r => !filtro || r.nombre.toLowerCase().includes(filtro));
+
+      if (filas.length === 0) {
+        cont.innerHTML = '<div class="empty">Non se atopou ningún socio con ese nome.</div>';
+        return;
+      }
+
+      let html = `<table><thead><tr>
+        <th style="width:42px">#</th><th>Socio</th><th class="num">Porras</th><th class="num">Acertos</th>
+      </tr></thead><tbody>`;
+
+      filas.forEach(r => {
+        html += `<tr>
+          <td class="num">${r.pos}</td>
+          <td>${escapeHtml(r.nombre)}</td>
+          <td class="num">${r.partidos}</td>
+          <td class="num"><span class="acierto-badge">${r.aciertos}</span></td>
+        </tr>`;
+      });
+      html += '</tbody></table>';
+      cont.innerHTML = html;
+    }
+
+    function renderPartido() {
+      const nombrePartido = document.getElementById('selectPartido').value;
+      const filtro = (document.getElementById('searchPartido').value || '').trim().toLowerCase();
+      const partidoObj = DATA.partidos.find(p => p.nombre === nombrePartido);
+      const marcadorBox = document.getElementById('marcadorBox');
+      const cont = document.getElementById('tablaPartido');
+
+      if (!partidoObj) {
+        marcadorBox.classList.add('hidden');
+        cont.innerHTML = '<div class="empty">Selecciona un partido.</div>';
+        return;
+      }
+
+      marcadorBox.classList.remove('hidden');
+
+      if (!partidoObj.iniciado) {
+        marcadorBox.innerText = `Comezo: ${partidoObj.fechaTexto}`;
+        const n = partidoObj.totalPorras || 0;
+        const txtPorras = n === 1 ? 'Hai 1 porra rexistrada.' : `Hai ${n} porras rexistradas.`;
+        cont.innerHTML = `
+          <div class="locked-box">
+            <div class="lock-icon">🔒</div>
+            <strong>Pronósticos ocultos ata o inicio do partido</strong>
+            <p>${txtPorras} Poderanse ver a partir do ${partidoObj.fechaTexto}.</p>
+          </div>`;
+        return;
+      }
+
+      marcadorBox.innerText = partidoObj.jugado
+        ? `Resultado oficial: ${partidoObj.golesLocalReal} - ${partidoObj.golesVisitanteReal}`
+        : 'Partido iniciado · Pendente de resultado oficial';
+
+      const lista = ((DATA.porrasPorPartido && DATA.porrasPorPartido[nombrePartido]) || [])
+        .filter(r => !filtro || r.nombre.toLowerCase().includes(filtro));
+
+      if (lista.length === 0) {
+        cont.innerHTML = '<div class="empty">Non hai porras rexistradas para mostrar.</div>';
+        return;
+      }
+
+      let html = `<table><thead><tr>
+        <th>Socio</th><th class="num">Pronóstico</th><th class="num">Estado</th>
+      </tr></thead><tbody>`;
+
+      lista.forEach(r => {
+        let estado = '⏳';
+        if (partidoObj.jugado) estado = r.acierto === 1 ? '✅' : '❌';
+        html += `<tr>
+          <td>${escapeHtml(r.nombre)}</td>
+          <td class="num">${r.golesLocal} - ${r.golesVisitante}</td>
+          <td class="num">${estado}</td>
+        </tr>`;
+      });
+      html += '</tbody></table>';
+      cont.innerHTML = html;
+    }
+
+    function escapeHtml(str) {
+      return String(str).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+    }
+  </script>
+</body>
+</html>

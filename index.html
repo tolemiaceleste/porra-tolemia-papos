@@ -2,153 +2,343 @@
 <html lang="gl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
   <title>Porra Tolemia Celeste</title>
+  <link rel="preconnect" href="https://script.google.com">
   <style>
-    :root {
-      --celeste: #8AC3EE;
-      --azul: #0066B3;
-      --azul-oscuro: #162436;
-      --rojo-papos: #D92332;
-      --fondo: #F2F7FB;
-      --texto: #1E293B;
-      --gris: #64748B;
-      --verde: #16A34A;
+    @layer reset, base, components, utilities;
+
+    @layer reset {
+      *, *::before, *::after { box-sizing: border-box; }
+      body, h1, h2, p { margin: 0; }
+      button, input, select { font: inherit; }
+      picture { display: contents; }
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-    body { background: var(--fondo); color: var(--texto); padding-bottom: 44px; }
-    header {
-      background: linear-gradient(135deg, var(--azul-oscuro) 0%, var(--azul) 60%, var(--celeste) 100%);
-      color: white; text-align: center; padding: 20px 16px 18px;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.16);
+
+    @layer base {
+      :root {
+        --celeste: #8AC3EE;
+        --azul-oscuro: #162436;
+        --rojo-btn: #D92332;
+        --azul-light: #0066B3;
+        --azul-dark: #60B5F5;
+        --rojo-texto-light: #D92332;
+        --rojo-texto-dark: #F87171;
+        --fondo-light: #F2F7FB;
+        --fondo-dark: #0D1520;
+        --superficie-light: #FFFFFF;
+        --superficie-dark: #162232;
+        --superficie-suave-light: #F2F7FB;
+        --superficie-suave-dark: #1E2E42;
+        --texto-light: #1E293B;
+        --texto-dark: #F1F5F9;
+        --gris-light: #475569;
+        --gris-dark: #94A3B8;
+        --borde-suave-light: #E2E8F0;
+        --borde-suave-dark: #29394F;
+        --borde-fila-light: #F1F5F9;
+        --borde-fila-dark: #1F2F44;
+        --verde-light: #15803D;
+        --verde-dark: #4ADE80;
+        --verde-bg-light: #DCFCE7;
+        --verde-bg-dark: #14532D;
+        --marcador-bg-light: #E0F2FE;
+        --marcador-bg-dark: #0C3559;
+        --marcador-texto-light: #162436;
+        --marcador-texto-dark: #E0F2FE;
+        --tab-activa-bg-light: #162436;
+        --tab-activa-bg-dark: #0066B3;
+        --lider-bg-light: #FEF9C3;
+        --lider-bg-dark: #3B2F0B;
+        --highlight-bg-light: #FDE047;
+        --highlight-bg-dark: #854D0E;
+        --highlight-texto-light: #1E293B;
+        --highlight-texto-dark: #FEF9C3;
+
+        --azul: var(--azul-light);
+        --rojo-texto: var(--rojo-texto-light);
+        --fondo: var(--fondo-light);
+        --superficie: var(--superficie-light);
+        --superficie-suave: var(--superficie-suave-light);
+        --texto: var(--texto-light);
+        --gris: var(--gris-light);
+        --borde-suave: var(--borde-suave-light);
+        --borde-fila: var(--borde-fila-light);
+        --verde: var(--verde-light);
+        --verde-bg: var(--verde-bg-light);
+        --marcador-bg: var(--marcador-bg-light);
+        --marcador-texto: var(--marcador-texto-light);
+        --tab-activa-bg: var(--tab-activa-bg-light);
+        --lider-bg: var(--lider-bg-light);
+        --highlight-bg: var(--highlight-bg-light);
+        --highlight-texto: var(--highlight-texto-light);
+        color-scheme: light dark;
+        accent-color: var(--azul);
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --azul: var(--azul-dark);
+          --rojo-texto: var(--rojo-texto-dark);
+          --fondo: var(--fondo-dark);
+          --superficie: var(--superficie-dark);
+          --superficie-suave: var(--superficie-suave-dark);
+          --texto: var(--texto-dark);
+          --gris: var(--gris-dark);
+          --borde-suave: var(--borde-suave-dark);
+          --borde-fila: var(--borde-fila-dark);
+          --verde: var(--verde-dark);
+          --verde-bg: var(--verde-bg-dark);
+          --marcador-bg: var(--marcador-bg-dark);
+          --marcador-texto: var(--marcador-texto-dark);
+          --tab-activa-bg: var(--tab-activa-bg-dark);
+          --lider-bg: var(--lider-bg-dark);
+          --highlight-bg: var(--highlight-bg-dark);
+          --highlight-texto: var(--highlight-texto-dark);
+        }
+      }
+
+      @supports (color: light-dark(white, black)) {
+        :root {
+          --azul: light-dark(var(--azul-light), var(--azul-dark));
+          --rojo-texto: light-dark(var(--rojo-texto-light), var(--rojo-texto-dark));
+          --fondo: light-dark(var(--fondo-light), var(--fondo-dark));
+          --superficie: light-dark(var(--superficie-light), var(--superficie-dark));
+          --superficie-suave: light-dark(var(--superficie-suave-light), var(--superficie-suave-dark));
+          --texto: light-dark(var(--texto-light), var(--texto-dark));
+          --gris: light-dark(var(--gris-light), var(--gris-dark));
+          --borde-suave: light-dark(var(--borde-suave-light), var(--borde-suave-dark));
+          --borde-fila: light-dark(var(--borde-fila-light), var(--borde-fila-dark));
+          --verde: light-dark(var(--verde-light), var(--verde-dark));
+          --verde-bg: light-dark(var(--verde-bg-light), var(--verde-bg-dark));
+          --marcador-bg: light-dark(var(--marcador-bg-light), var(--marcador-bg-dark));
+          --marcador-texto: light-dark(var(--marcador-texto-light), var(--marcador-texto-dark));
+          --tab-activa-bg: light-dark(var(--tab-activa-bg-light), var(--tab-activa-bg-dark));
+          --lider-bg: light-dark(var(--lider-bg-light), var(--lider-bg-dark));
+          --highlight-bg: light-dark(var(--highlight-bg-light), var(--highlight-bg-dark));
+          --highlight-texto: light-dark(var(--highlight-texto-light), var(--highlight-texto-dark));
+        }
+      }
+
+      body {
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        line-height: 1.45; background: var(--fondo); color: var(--texto); padding-block-end: 44px;
+      }
+
+      h1, h2, thead th, .locked-box strong { text-wrap: balance; }
+      header p, .sponsor-text, .locked-box p, .login-hint, .empty { text-wrap: pretty; }
+      ::selection { background: var(--celeste); color: var(--azul-oscuro); }
+      ::highlight(search-results) { background-color: var(--highlight-bg); color: var(--highlight-texto); text-decoration: underline; }
+      :focus-visible { outline: 3px solid var(--azul); outline-offset: 2px; }
     }
-    .header-brand { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 8px; }
-    .logo-peña {
-      width: 54px; height: 54px; object-fit: contain; border-radius: 50%;
-      background: white; padding: 3px; box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+
+    @layer components {
+      header {
+        background: linear-gradient(135deg, var(--azul-oscuro) 0%, #0066B3 60%, var(--celeste) 100%);
+        color: white; text-align: center; padding: 20px 16px 18px;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.22);
+      }
+      header :focus-visible { outline-color: white; }
+      .header-brand { display: flex; align-items: center; justify-content: center; gap: 12px; margin-block-end: 8px; }
+      .logo-peña {
+        flex-shrink: 0; width: 54px; height: 54px; object-fit: contain; border-radius: 50%;
+        background: white; padding: 3px; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+      }
+      header h1 { font-size: 1.38rem; letter-spacing: 0.3px; }
+      header p { font-size: 0.88rem; opacity: 0.94; margin-block-end: 14px; }
+      .btn-porra {
+        display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-block-size: 44px;
+        background: var(--rojo-btn); color: white; text-decoration: none; font-weight: 700;
+        font-size: 0.92rem; padding: 9px 20px; border-radius: 22px; box-shadow: 0 3px 8px rgba(0, 0, 0, 0.22);
+      }
+
+      .container { max-inline-size: 680px; margin-block: 16px; margin-inline: auto; padding-inline: 12px; }
+      .sponsor-banner {
+        display: flex; align-items: center; justify-content: center; gap: 12px;
+        background: var(--superficie); border-inline-start: 4px solid var(--rojo-btn); border-radius: 10px;
+        padding: 10px 14px; margin-block-end: 14px; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08); font-size: 0.85rem;
+      }
+      .sponsor-banner img {
+        box-sizing: content-box; flex-shrink: 0; height: 28px; width: auto; object-fit: contain;
+        background: white; padding: 2px 5px; border-radius: 6px;
+      }
+      .sponsor-text strong { color: var(--rojo-texto); }
+      .sponsor-sub { font-size: 0.78rem; color: var(--gris); display: block; margin-block-start: 2px; }
+
+      .sync-bar {
+        display: flex; align-items: center; justify-content: flex-end; gap: 6px;
+        font-size: 0.8rem; color: var(--gris); margin: -6px 4px 10px; min-block-size: 28px;
+      }
+      .sync-btn {
+        background: none; border: none; color: var(--azul); font-size: 0.8rem; font-weight: 600;
+        cursor: pointer; padding: 2px 4px; min-block-size: 24px; min-inline-size: 24px; border-radius: 4px;
+      }
+
+      .tabs { display: flex; gap: 8px; margin-block-end: 14px; }
+      .tab-btn {
+        position: relative; flex: 1; min-block-size: 44px; padding: 11px; border: none; border-radius: 10px;
+        background: var(--superficie); color: var(--gris); font-weight: 600; font-size: 0.94rem;
+        cursor: pointer; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08); transition: background-color 0.2s, color 0.2s;
+      }
+      .tab-btn[aria-selected="true"] { background: var(--tab-activa-bg); color: white; }
+      .tab-btn[aria-selected="true"]:focus-visible { outline-color: white; }
+      .tab-btn[aria-selected="true"]::after {
+        content: ""; position: absolute; inset: auto 12px 0;
+        border-block-end: 3px solid var(--celeste); border-radius: 2px;
+      }
+      [role="tabpanel"]:not([hidden]) { view-transition-name: tab-panel; }
+
+      .card {
+        background: var(--superficie); border-radius: 12px; padding: 16px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08); margin-block-end: 14px;
+      }
+      label {
+        display: block; font-size: 0.78rem; font-weight: 700; color: var(--gris);
+        margin-block-end: 6px; text-transform: uppercase;
+      }
+      select, .search-input {
+        inline-size: 100%; min-block-size: 44px; padding: 10px 12px; border: 1.5px solid var(--gris);
+        border-radius: 8px; font-size: max(1rem, 1em); background: var(--superficie); color: var(--texto);
+      }
+      .search-input { margin-block-start: 10px; }
+
+      .stats { display: flex; gap: 10px; margin-block-start: 14px; }
+      .stat-box { flex: 1; background: var(--superficie-suave); border-radius: 8px; padding: 10px; text-align: center; }
+      .stat-num { font-size: 1.35rem; font-weight: 800; color: var(--azul); font-variant-numeric: tabular-nums; }
+      .stat-lbl { font-size: 0.78rem; color: var(--gris); margin-block-start: 2px; }
+
+      .marcador-real {
+        margin-block-start: 12px; padding: 10px; border-radius: 8px; text-align: center;
+        background: var(--marcador-bg); color: var(--marcador-texto); font-weight: 700; font-size: 0.92rem;
+      }
+      .locked-box { text-align: center; padding: 28px 14px; color: var(--texto); }
+      .locked-box .lock-icon { font-size: 2rem; margin-block-end: 8px; }
+      .locked-box p { font-size: 0.92rem; color: var(--gris); margin-block-start: 6px; }
+
+      .table-wrapper { position: relative; overflow: auto; max-inline-size: 100%; max-block-size: min(68vh, 560px); }
+      table { inline-size: 100%; border-collapse: separate; border-spacing: 0; margin-block-start: 4px; }
+      thead { position: sticky; inset-block-start: 0; z-index: 1; }
+      thead th {
+        background: var(--superficie); text-align: start; font-size: 0.76rem; color: var(--gris);
+        text-transform: uppercase; padding: 10px 8px; border-block-end: 2px solid var(--borde-suave);
+      }
+      tbody th { font-weight: 400; text-align: start; padding: 11px 8px; font-size: 0.93rem; }
+      td { padding: 11px 8px; font-size: 0.93rem; }
+      tbody tr:not(:last-child) :is(th, td) { border-block-end: 1px solid var(--borde-fila); }
+      tbody tr.lider :is(th, td) { background: var(--lider-bg); }
+      tbody tr.lider > :first-child { box-shadow: inset 3px 0 0 #EAB308; }
+      .col-pos { inline-size: 42px; }
+      .num, thead th.num { text-align: center; font-weight: 600; font-variant-numeric: tabular-nums; }
+      .acierto-badge {
+        display: inline-block; background: var(--verde-bg); color: var(--verde);
+        font-weight: 700; padding: 2px 9px; border-radius: 12px; font-size: 0.85rem;
+      }
+      .empty { text-align: center; color: var(--gris); padding: 26px 10px; font-size: 0.94rem; }
+
+      .loader-box { text-align: center; padding: 50px 16px; color: var(--azul); font-weight: 600; }
+      .loader-box progress { display: block; inline-size: 180px; margin: 0 auto 12px; }
+      .loader-error { color: var(--rojo-texto); }
+
+      .login-box { max-inline-size: 360px; margin: 36px auto; text-align: center; }
+      .login-box h2 { font-size: 1.12rem; }
+      .login-hint { font-size: 0.86rem; color: var(--gris); margin-block-start: 6px; }
+      .login-box input {
+        inline-size: 100%; min-block-size: 44px; padding: 11px 12px; border: 1.5px solid var(--gris);
+        border-radius: 8px; font-size: max(1rem, 1em); margin-block: 12px; text-align: center;
+        background: var(--superficie); color: var(--texto);
+      }
+      .login-box button {
+        inline-size: 100%; min-block-size: 44px; padding: 11px; border: none; border-radius: 8px;
+        background: var(--tab-activa-bg); color: white; font-weight: 700; font-size: 0.95rem; cursor: pointer;
+      }
+      .login-box button:disabled { opacity: 0.65; cursor: wait; }
+      .login-error { color: var(--rojo-texto); font-size: 0.85rem; margin-block-start: 10px; font-weight: 600; }
+
+      @media (pointer: coarse) {
+        .btn-porra, .tab-btn, select, .search-input, .login-box input, .login-box button { min-block-size: 48px; }
+        .sync-btn { min-block-size: 44px; padding-inline: 8px; }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .tab-btn { transition: none; }
+        ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
+      }
     }
-    header h1 { font-size: 1.38rem; letter-spacing: 0.3px; }
-    header p { font-size: 0.88rem; opacity: 0.92; margin-bottom: 14px; }
-    .btn-porra {
-      display: inline-block; background: var(--rojo-papos); color: white;
-      text-decoration: none; font-weight: 700; font-size: 0.92rem;
-      padding: 9px 20px; border-radius: 22px; box-shadow: 0 3px 8px rgba(0,0,0,0.22);
+
+    @layer utilities {
+      [hidden]:not([hidden="until-found"]) { display: none !important; }
+      .visually-hidden:where(:not(:focus-within, :active)) {
+        position: absolute !important; clip-path: inset(50%) !important; overflow: hidden !important;
+        width: 1px !important; height: 1px !important; margin: -1px !important;
+        padding: 0 !important; border: 0 !important; white-space: nowrap !important;
+      }
     }
-    .container { max-width: 680px; margin: 16px auto; padding: 0 12px; }
-    .sponsor-banner {
-      display: flex; align-items: center; justify-content: center; gap: 12px;
-      background: white; border-left: 4px solid var(--rojo-papos);
-      border-radius: 10px; padding: 10px 14px; margin-bottom: 14px;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.06); font-size: 0.85rem;
-    }
-    .sponsor-banner img { height: 28px; object-fit: contain; }
-    .sponsor-text strong { color: var(--rojo-papos); }
-    .sponsor-sub { font-size: 0.76rem; color: var(--gris); display: block; margin-top: 2px; }
-    .sync-bar {
-      text-align: right; font-size: 0.78rem; color: var(--gris);
-      margin: -6px 4px 10px; min-height: 18px;
-    }
-    .sync-btn {
-      background: none; border: none; color: var(--azul); font-size: 0.78rem;
-      font-weight: 600; cursor: pointer; padding: 0;
-    }
-    .tabs { display: flex; gap: 8px; margin-bottom: 14px; }
-    .tab-btn {
-      flex: 1; padding: 11px; border: none; border-radius: 10px;
-      background: white; color: var(--gris); font-weight: 600; font-size: 0.94rem;
-      cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.08); transition: 0.2s;
-    }
-    .tab-btn.active { background: var(--azul-oscuro); color: white; }
-    .card {
-      background: white; border-radius: 12px; padding: 16px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.06); margin-bottom: 14px;
-    }
-    label { display: block; font-size: 0.78rem; font-weight: 700; color: var(--gris); margin-bottom: 6px; text-transform: uppercase; }
-    select, .search-input {
-      width: 100%; padding: 10px 12px; border: 1.5px solid #CBD5E1; border-radius: 8px;
-      font-size: 0.95rem; background: #fff; color: var(--texto);
-    }
-    .search-input { margin-top: 10px; font-size: 0.9rem; }
-    .stats { display: flex; gap: 10px; margin-top: 14px; }
-    .stat-box { flex: 1; background: var(--fondo); border-radius: 8px; padding: 10px; text-align: center; }
-    .stat-num { font-size: 1.35rem; font-weight: 800; color: var(--azul); }
-    .stat-lbl { font-size: 0.75rem; color: var(--gris); margin-top: 2px; }
-    .marcador-real {
-      margin-top: 12px; padding: 10px; border-radius: 8px; text-align: center;
-      background: #E0F2FE; color: var(--azul-oscuro); font-weight: 700; font-size: 0.92rem;
-    }
-    .locked-box { text-align: center; padding: 28px 14px; color: var(--azul-oscuro); }
-    .locked-box .lock-icon { font-size: 2rem; margin-bottom: 8px; }
-    .locked-box p { font-size: 0.92rem; color: var(--gris); margin-top: 6px; }
-    table { width: 100%; border-collapse: collapse; margin-top: 4px; }
-    th {
-      text-align: left; font-size: 0.76rem; color: var(--gris); text-transform: uppercase;
-      padding: 10px 8px; border-bottom: 2px solid #E2E8F0;
-    }
-    td { padding: 11px 8px; border-bottom: 1px solid #F1F5F9; font-size: 0.93rem; }
-    tr:last-child td { border-bottom: none; }
-    .num { text-align: center; font-weight: 600; }
-    .acierto-badge {
-      display: inline-block; background: #DCFCE7; color: var(--verde);
-      font-weight: 700; padding: 2px 9px; border-radius: 12px; font-size: 0.85rem;
-    }
-    .empty { text-align: center; color: var(--gris); padding: 26px 10px; font-size: 0.94rem; }
-    .hidden { display: none; }
-    #loader { text-align: center; padding: 50px 16px; color: var(--azul); font-weight: 600; }
-    .login-box { max-width: 360px; margin: 36px auto; text-align: center; }
-    .login-box input {
-      width: 100%; padding: 11px 12px; border: 1.5px solid #CBD5E1; border-radius: 8px;
-      font-size: 1rem; margin: 12px 0; text-align: center;
-    }
-    .login-box button {
-      width: 100%; padding: 11px; border: none; border-radius: 8px;
-      background: var(--azul-oscuro); color: white; font-weight: 700; font-size: 0.95rem; cursor: pointer;
-    }
-    .login-error { color: var(--rojo-papos); font-size: 0.85rem; margin-top: 10px; font-weight: 600; }
   </style>
 </head>
 <body>
   <header>
     <div class="header-brand">
-      <img id="imgTolemia" class="logo-peña" src="logo-tolemia.png" alt="Tolemia Celeste">
+      <picture>
+        <source srcset="logo-tolemia.webp" type="image/webp">
+        <img id="imgTolemia" class="logo-peña" src="logo-tolemia.png" alt="Tolemia Celeste" width="54" height="54">
+      </picture>
       <div><h1>Porra Tolemia Celeste</h1></div>
     </div>
     <p>Clasificación mensual e pronósticos por partido</p>
-    <a id="linkForm" class="btn-porra hidden" href="#" target="_blank">⚽ Facer a miña porra</a>
+    <a id="linkForm" class="btn-porra" href="#" target="_blank" rel="noopener noreferrer" hidden>
+      <span aria-hidden="true">⚽</span> Facer a miña porra
+    </a>
   </header>
 
-  <div class="container">
-    <div class="sponsor-banner">
-      <img id="imgPapos" src="logo-papos.png" alt="Papos">
+  <main class="container">
+    <aside class="sponsor-banner" aria-label="Patrocinador">
+      <picture>
+        <source srcset="logo-papos.webp" type="image/webp">
+        <img id="imgPapos" src="logo-papos.png" alt="Papos" width="63" height="28">
+      </picture>
       <div class="sponsor-text">
         Premio mensual: <strong>Menú dobre completo en Papos</strong>
-        <span class="sponsor-sub">📍 Rúa Venezuela, 10 · Para o socio con máis acertos do mes</span>
+        <span class="sponsor-sub"><span aria-hidden="true">📍</span> Rúa Venezuela, 10 · Para o socio con máis acertos do mes</span>
       </div>
+    </aside>
+
+    <section id="loginBox" class="card login-box" aria-labelledby="loginTitle" hidden>
+      <h2 id="loginTitle"><span aria-hidden="true">🔒</span> Acceso exclusivo socios</h2>
+      <p id="loginHint" class="login-hint">Introduce a clave da peña para ver a porra</p>
+      <form id="loginForm" novalidate>
+        <label for="inputClave" class="visually-hidden">Contrasinal da peña</label>
+        <input id="inputClave" name="password" type="password" placeholder="Contrasinal" autocomplete="current-password" enterkeyhint="go" autocorrect="off" autocapitalize="none" spellcheck="false" aria-describedby="loginHint" required>
+        <button id="btnEntrar" type="submit">Entrar</button>
+      </form>
+      <div id="loginError" class="login-error" role="alert" hidden></div>
+    </section>
+
+    <div id="loader" class="loader-box" hidden>
+      <progress id="loaderProgress" aria-label="Cargando datos da porra"></progress>
+      <p id="loaderMsg">Cargando datos da porra...</p>
     </div>
 
-    <div id="loginBox" class="card login-box hidden">
-      <h3>🔒 Acceso exclusivo socios</h3>
-      <p style="font-size:0.86rem; color:var(--gris); margin-top:6px;">Introduce a clave da peña para ver a porra</p>
-      <input id="inputClave" type="password" placeholder="Contrasinal" onkeydown="if(event.key==='Enter') enviarClave()">
-      <button onclick="enviarClave()">Entrar</button>
-      <div id="loginError" class="login-error hidden"></div>
-    </div>
-
-    <div id="loader" class="hidden">Cargando datos da porra...</div>
-
-    <div id="app" class="hidden">
+    <div id="app" hidden>
       <div id="syncBar" class="sync-bar"></div>
 
-      <div class="tabs">
-        <button class="tab-btn active" onclick="cambiarTab('clasificacion', this)">🏆 Clasificación</button>
-        <button class="tab-btn" onclick="cambiarTab('partidos', this)">📋 Porras por partido</button>
+      <div class="tabs" role="tablist" aria-label="Seccións da porra">
+        <button type="button" id="btn-tab-clasificacion" class="tab-btn" role="tab" aria-selected="true" tabindex="0" data-tab="clasificacion">
+          <span aria-hidden="true">🏆</span> Clasificación
+        </button>
+        <button type="button" id="btn-tab-partidos" class="tab-btn" role="tab" aria-selected="false" tabindex="-1" data-tab="partidos">
+          <span aria-hidden="true">📋</span> Porras por partido
+        </button>
       </div>
 
-      <div id="tab-clasificacion">
+      <div id="tab-clasificacion" role="tabpanel" aria-labelledby="btn-tab-clasificacion">
         <div class="card">
-          <label for="selectMes">Mes</label>
-          <select id="selectMes" onchange="renderClasificacion()"></select>
-          <input id="searchClasif" class="search-input" type="text" placeholder="🔍 Buscar socio..." oninput="renderClasificacion()">
+          <search aria-label="Filtrar clasificación">
+            <label for="selectMes">Mes</label>
+            <select id="selectMes"></select>
+            <label for="searchClasif" class="visually-hidden">Buscar socio na clasificación</label>
+            <input id="searchClasif" class="search-input" type="search" placeholder="🔍 Buscar socio..." enterkeyhint="search" autocorrect="off" autocapitalize="none" spellcheck="false">
+          </search>
           <div class="stats">
             <div class="stat-box">
               <div class="stat-num" id="statParticipantes">0</div>
@@ -163,275 +353,456 @@
         <div class="card" id="tablaClasificacion"></div>
       </div>
 
-      <div id="tab-partidos" class="hidden">
+      <div id="tab-partidos" role="tabpanel" aria-labelledby="btn-tab-partidos" hidden="until-found">
         <div class="card">
-          <label for="selectPartido">Partido</label>
-          <select id="selectPartido" onchange="renderPartido()"></select>
-          <input id="searchPartido" class="search-input" type="text" placeholder="🔍 Buscar socio..." oninput="renderPartido()">
-          <div id="marcadorBox" class="marcador-real hidden"></div>
+          <search aria-label="Filtrar porras por partido">
+            <label for="selectPartido">Partido</label>
+            <select id="selectPartido"></select>
+            <label for="searchPartido" class="visually-hidden">Buscar socio nas porras do partido</label>
+            <input id="searchPartido" class="search-input" type="search" placeholder="🔍 Buscar socio..." enterkeyhint="search" autocorrect="off" autocapitalize="none" spellcheck="false">
+          </search>
+          <div id="marcadorBox" class="marcador-real" hidden></div>
         </div>
         <div class="card" id="tablaPartido"></div>
       </div>
     </div>
-  </div>
+  </main>
 
   <script>
-    const API_URL = 'https://script.google.com/macros/s/AKfycbzoaT5B5kQwmJ5eyAhPPQDQjbTPDM9tDvYZvjNtkOKQyV0S3xj0y_PELNZFUY7OfdxLxg/exec';
-    const STORAGE_CLAVE = 'clave_porra_tolemia';
-    const STORAGE_CACHE = 'cache_datos_porra_tolemia';
-    let DATA = null;
+    (() => {
+      'use strict';
 
-    const MESES_GL = [
-      'Xaneiro', 'Febreiro', 'Marzo', 'Abril', 'Maio', 'Xuño',
-      'Xullo', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Decembro'
-    ];
+      const API_URL = 'https://script.google.com/macros/s/AKfycbzoaT5B5kQwmJ5eyAhPPQDQjbTPDM9tDvYZvjNtkOKQyV0S3xj0y_PELNZFUY7OfdxLxg/exec';
+      const STORAGE_CLAVE = 'clave_porra_tolemia';
+      const STORAGE_CACHE = 'cache_datos_porra_tolemia';
+      const FETCH_TIMEOUT_MS = 15000;
+      const MESES_GL = ['Xaneiro', 'Febreiro', 'Marzo', 'Abril', 'Maio', 'Xuño', 'Xullo', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Decembro'];
+      let DATA = null;
+      let fetchController = null;
+      let tabActiva = 'clasificacion';
 
-    function formatearMes(ym) {
-      const partes = String(ym || '').split('-');
-      if (partes.length !== 2) return ym;
-      const idx = parseInt(partes[1], 10) - 1;
-      return (MESES_GL[idx] ? MESES_GL[idx] : partes[1]) + ' ' + partes[0];
-    }
+      const $ = id => document.getElementById(id);
+      const els = {
+        linkForm: $('linkForm'), loginBox: $('loginBox'), loginForm: $('loginForm'),
+        inputClave: $('inputClave'), btnEntrar: $('btnEntrar'), loginError: $('loginError'),
+        loader: $('loader'), loaderProgress: $('loaderProgress'), loaderMsg: $('loaderMsg'),
+        app: $('app'), syncBar: $('syncBar'), tablist: document.querySelector('[role="tablist"]'),
+        tabs: Array.from(document.querySelectorAll('[role="tab"]')),
+        panels: new Map([['clasificacion', $('tab-clasificacion')], ['partidos', $('tab-partidos')]]),
+        selectMes: $('selectMes'), searchClasif: $('searchClasif'),
+        statParticipantes: $('statParticipantes'), statAciertos: $('statAciertos'),
+        tablaClasificacion: $('tablaClasificacion'), selectPartido: $('selectPartido'),
+        searchPartido: $('searchPartido'), marcadorBox: $('marcadorBox'), tablaPartido: $('tablaPartido')
+      };
 
-    function ponerEstadoSync(estado) {
-      const bar = document.getElementById('syncBar');
-      if (!bar) return;
-      if (estado === 'cargando') {
-        bar.innerHTML = '⏳ Actualizando datos...';
-      } else if (estado === 'error') {
-        bar.innerHTML = '⚠️ Sen conexión · <button class="sync-btn" onclick="refrescarManual()">Reintentar</button>';
-      } else {
-        bar.innerHTML = '<button class="sync-btn" onclick="refrescarManual()">🔄 Actualizar</button>';
+      function el(tag, attrs, ...children) {
+        const node = document.createElement(tag);
+        if (attrs) {
+          for (const [key, val] of Object.entries(attrs)) {
+            if (val === undefined || val === null || val === false) continue;
+            if (key === 'className') node.className = val;
+            else if (val === true) node.setAttribute(key, '');
+            else node.setAttribute(key, String(val));
+          }
+        }
+        for (const child of children) {
+          if (child === undefined || child === null || child === false) continue;
+          node.append(typeof child === 'string' || typeof child === 'number' ? String(child) : child);
+        }
+        return node;
       }
-    }
 
-    function refrescarManual() {
-      const clave = localStorage.getItem(STORAGE_CLAVE);
-      if (clave) cargarConClave(clave, true);
-    }
-
-    function cargarConClave(clave, enSegundoPlano) {
-      if (!enSegundoPlano) {
-        document.getElementById('loginBox').classList.add('hidden');
-        document.getElementById('loginError').classList.add('hidden');
-        document.getElementById('loader').classList.remove('hidden');
-      } else {
-        ponerEstadoSync('cargando');
+      function esUrlSegura(raw) {
+        try {
+          const u = new URL(raw);
+          return u.protocol === 'https:' || u.protocol === 'http:';
+        } catch { return false; }
       }
 
-      fetch(API_URL + '?key=' + encodeURIComponent(clave))
-        .then(res => {
+      function formatearMes(ym) {
+        const partes = String(ym || '').split('-');
+        if (partes.length !== 2) return ym;
+        const idx = parseInt(partes[1], 10) - 1;
+        return (MESES_GL[idx] ? MESES_GL[idx] : partes[1]) + ' ' + partes[0];
+      }
+
+      function resaltarCoincidencias(contenedor, termino) {
+        if (typeof CSS === 'undefined' || !CSS.highlights || typeof Highlight === 'undefined') return;
+        CSS.highlights.delete('search-results');
+        const q = (termino || '').trim().toLowerCase();
+        if (!q || !contenedor) return;
+
+        const ranges = [];
+        for (const celda of contenedor.querySelectorAll('tbody th')) {
+          const walker = document.createTreeWalker(celda, NodeFilter.SHOW_TEXT);
+          for (let n = walker.nextNode(); n; n = walker.nextNode()) {
+            const lower = n.textContent.toLowerCase();
+            let pos = lower.indexOf(q);
+            while (pos !== -1) {
+              const r = new Range();
+              r.setStart(n, pos);
+              r.setEnd(n, pos + q.length);
+              ranges.push(r);
+              pos = lower.indexOf(q, pos + q.length);
+            }
+          }
+        }
+        if (ranges.length > 0) CSS.highlights.set('search-results', new Highlight(...ranges));
+      }
+
+      function crearTabla(captionId, captionText, headers, rows) {
+        const theadRow = el('tr', null, ...headers.map(h => el('th', { scope: 'col', className: h.cls }, h.texto)));
+        const tabla = el(
+          'table', null,
+          el('caption', { id: captionId, className: 'visually-hidden' }, captionText),
+          el('thead', null, theadRow),
+          el('tbody', null, ...rows)
+        );
+        return el('div', { className: 'table-wrapper', tabindex: '0', role: 'region', 'aria-labelledby': captionId }, tabla);
+      }
+
+      function ponerEstadoSync(estado) {
+        if (estado === 'cargando') {
+          els.syncBar.replaceChildren(el('span', null, el('span', { 'aria-hidden': 'true' }, '⏳ '), 'Actualizando datos...'));
+          return;
+        }
+        const esError = estado === 'error';
+        const btn = el(
+          'button', { type: 'button', className: 'sync-btn' },
+          esError ? 'Reintentar' : el('span', null, el('span', { 'aria-hidden': 'true' }, '🔄 '), 'Actualizar')
+        );
+        btn.addEventListener('click', refrescarManual);
+        if (esError) {
+          els.syncBar.replaceChildren(el('span', { role: 'status' }, el('span', { 'aria-hidden': 'true' }, '⚠️ '), 'Sen conexión · '), btn);
+        } else {
+          els.syncBar.replaceChildren(btn);
+        }
+      }
+
+      function mostrarErroLogin(mensaxe) {
+        els.loginError.textContent = mensaxe;
+        els.loginError.hidden = false;
+        els.inputClave.setAttribute('aria-invalid', 'true');
+        els.inputClave.setAttribute('aria-describedby', 'loginHint loginError');
+      }
+
+      function limparErroLogin() {
+        els.loginError.textContent = '';
+        els.loginError.hidden = true;
+        els.inputClave.removeAttribute('aria-invalid');
+        els.inputClave.setAttribute('aria-describedby', 'loginHint');
+      }
+
+      function refrescarManual() {
+        const clave = localStorage.getItem(STORAGE_CLAVE);
+        if (clave) cargarConClave(clave, { enSegundoPlano: true, bajaPrioridad: false });
+      }
+
+      async function cargarConClave(clave, { enSegundoPlano = false, bajaPrioridad = false } = {}) {
+        if (fetchController) fetchController.abort();
+        const controller = new AbortController();
+        fetchController = controller;
+
+        let timeoutId = null;
+        let signal = controller.signal;
+        if (typeof AbortSignal.any === 'function' && typeof AbortSignal.timeout === 'function') {
+          signal = AbortSignal.any([controller.signal, AbortSignal.timeout(FETCH_TIMEOUT_MS)]);
+        } else {
+          timeoutId = setTimeout(() => {
+            try { controller.abort(new DOMException('Timeout', 'TimeoutError')); }
+            catch { controller.abort(); }
+          }, FETCH_TIMEOUT_MS);
+        }
+
+        if (!enSegundoPlano) {
+          els.loginBox.hidden = true;
+          limparErroLogin();
+          els.loaderProgress.hidden = false;
+          els.loaderMsg.classList.remove('loader-error');
+          els.loaderMsg.removeAttribute('role');
+          els.loaderMsg.replaceChildren('Cargando datos da porra...');
+          els.loader.hidden = false;
+          els.btnEntrar.disabled = true;
+        } else {
+          ponerEstadoSync('cargando');
+        }
+
+        const url = new URL(API_URL);
+        url.searchParams.set('key', clave);
+        const fetchOptions = bajaPrioridad ? { signal, priority: 'low' } : { signal };
+
+        try {
+          const res = await fetch(url, fetchOptions);
           if (!res.ok) throw new Error('HTTP ' + res.status);
-          return res.json();
-        })
-        .then(data => {
+          const data = await res.json();
+
           if (data.error) {
             localStorage.removeItem(STORAGE_CLAVE);
             localStorage.removeItem(STORAGE_CACHE);
-            document.getElementById('loader').classList.add('hidden');
-            document.getElementById('app').classList.add('hidden');
-            document.getElementById('linkForm').classList.add('hidden');
-            document.getElementById('loginBox').classList.remove('hidden');
-            const errBox = document.getElementById('loginError');
-            errBox.innerText = data.error;
-            errBox.classList.remove('hidden');
+            els.loader.hidden = true;
+            els.app.hidden = true;
+            els.linkForm.hidden = true;
+            els.loginBox.hidden = false;
+            mostrarErroLogin(data.error);
+            els.inputClave.focus();
             return;
           }
+
           localStorage.setItem(STORAGE_CLAVE, clave);
-          try {
-            localStorage.setItem(STORAGE_CACHE, JSON.stringify(data));
-          } catch (e) {}
+          try { localStorage.setItem(STORAGE_CACHE, JSON.stringify(data)); } catch {}
           inicializar(data);
           ponerEstadoSync('listo');
-        })
-        .catch(err => {
+        } catch (err) {
+          const reasonName = controller.signal.reason && controller.signal.reason.name;
+          const esTimeout = (err && err.name === 'TimeoutError') || reasonName === 'TimeoutError';
+          if (err && err.name === 'AbortError' && !esTimeout) return;
           if (enSegundoPlano) {
             ponerEstadoSync('error');
           } else {
-            document.getElementById('loader').innerText = 'Erro ao cargar os datos: ' + err.message;
+            const detalle = esTimeout ? 'Tempo de espera esgotado' : (err && err.message ? err.message : 'Erro descoñecido');
+            const retryBtn = el('button', { type: 'button', className: 'sync-btn' }, 'Reintentar');
+            retryBtn.addEventListener('click', () => cargarConClave(clave, { enSegundoPlano: false, bajaPrioridad: false }));
+            els.loaderProgress.hidden = true;
+            els.loaderMsg.classList.add('loader-error');
+            els.loaderMsg.setAttribute('role', 'alert');
+            els.loaderMsg.replaceChildren('Erro ao cargar os datos: ' + detalle + ' · ', retryBtn);
           }
-        });
-    }
-
-    function enviarClave() {
-      const clave = document.getElementById('inputClave').value.trim();
-      if (!clave) return;
-      cargarConClave(clave, false);
-    }
-
-    // Arranque instantáneo: si hay clave y caché local, pinta en 0 ms y actualiza por detrás
-    const claveGuardada = localStorage.getItem(STORAGE_CLAVE);
-    if (claveGuardada) {
-      let cacheValida = null;
-      try {
-        const raw = localStorage.getItem(STORAGE_CACHE);
-        if (raw) cacheValida = JSON.parse(raw);
-      } catch (e) {}
-
-      if (cacheValida && cacheValida.meses) {
-        inicializar(cacheValida);
-        cargarConClave(claveGuardada, true);
-      } else {
-        cargarConClave(claveGuardada, false);
-      }
-    } else {
-      document.getElementById('loginBox').classList.remove('hidden');
-    }
-
-    function inicializar(data) {
-      const selMes = document.getElementById('selectMes');
-      const selPart = document.getElementById('selectPartido');
-      const mesPrevio = DATA ? selMes.value : null;
-      const partidoPrevio = DATA ? selPart.value : null;
-
-      DATA = data;
-      document.getElementById('loader').classList.add('hidden');
-      document.getElementById('app').classList.remove('hidden');
-
-      if (data.formUrl) {
-        const linkForm = document.getElementById('linkForm');
-        linkForm.href = data.formUrl;
-        linkForm.classList.remove('hidden');
-      }
-
-      if (data.meses.length === 0) {
-        selMes.innerHTML = '<option value="">Sen meses dispoñibles</option>';
-      } else {
-        const hoy = new Date();
-        const mesActual = hoy.getFullYear() + '-' + String(hoy.getMonth() + 1).padStart(2, '0');
-        selMes.innerHTML = data.meses.map(m => `<option value="${m}">${formatearMes(m)}</option>`).join('');
-        if (mesPrevio && data.meses.includes(mesPrevio)) {
-          selMes.value = mesPrevio;
-        } else if (data.meses.includes(mesActual)) {
-          selMes.value = mesActual;
+        } finally {
+          if (timeoutId !== null) clearTimeout(timeoutId);
+          if (fetchController === controller) fetchController = null;
+          els.btnEntrar.disabled = false;
         }
       }
 
-      if (data.partidos.length === 0) {
-        selPart.innerHTML = '<option value="">Sen partidos dispoñibles</option>';
-      } else {
-        selPart.innerHTML = data.partidos.map(p => `<option value="${escapeHtml(p.nombre)}">${escapeHtml(p.nombre)}</option>`).join('');
-        if (partidoPrevio && data.partidos.some(p => p.nombre === partidoPrevio)) {
-          selPart.value = partidoPrevio;
+      function inicializar(data) {
+        const mesPrevio = DATA ? els.selectMes.value : null;
+        const partidoPrevio = DATA ? els.selectPartido.value : null;
+        DATA = data;
+        els.loader.hidden = true;
+        els.app.hidden = false;
+
+        if (data.formUrl && esUrlSegura(data.formUrl)) {
+          els.linkForm.href = data.formUrl;
+          els.linkForm.hidden = false;
         } else {
-          const iniciados = data.partidos.filter(p => p.iniciado);
-          if (iniciados.length > 0) {
-            selPart.value = iniciados[iniciados.length - 1].nombre;
+          els.linkForm.hidden = true;
+        }
+
+        if (data.meses.length === 0) {
+          els.selectMes.replaceChildren(el('option', { value: '' }, 'Sen meses dispoñibles'));
+        } else {
+          const hoy = new Date();
+          const mesActual = hoy.getFullYear() + '-' + String(hoy.getMonth() + 1).padStart(2, '0');
+          els.selectMes.replaceChildren(...data.meses.map(m => el('option', { value: m }, formatearMes(m))));
+          if (mesPrevio && data.meses.includes(mesPrevio)) els.selectMes.value = mesPrevio;
+          else if (data.meses.includes(mesActual)) els.selectMes.value = mesActual;
+        }
+
+        if (data.partidos.length === 0) {
+          els.selectPartido.replaceChildren(el('option', { value: '' }, 'Sen partidos dispoñibles'));
+        } else {
+          els.selectPartido.replaceChildren(...data.partidos.map(p => el('option', { value: p.nombre }, p.nombre)));
+          if (partidoPrevio && data.partidos.some(p => p.nombre === partidoPrevio)) {
+            els.selectPartido.value = partidoPrevio;
+          } else {
+            const ultimoIniciado = data.partidos.findLast(p => p.iniciado);
+            if (ultimoIniciado) els.selectPartido.value = ultimoIniciado.nombre;
           }
         }
+
+        renderClasificacion();
+        renderPartido();
       }
 
-      renderClasificacion();
-      renderPartido();
-    }
+      function activarTab(tabName, { moverFoco = false, animar = true } = {}) {
+        const tabSeleccionada = els.tabs.find(t => t.dataset.tab === tabName);
+        const aplicarCambio = () => {
+          tabActiva = tabName;
+          for (const tab of els.tabs) {
+            const activa = tab.dataset.tab === tabName;
+            tab.setAttribute('aria-selected', String(activa));
+            tab.tabIndex = activa ? 0 : -1;
+          }
+          for (const [nombre, panel] of els.panels.entries()) {
+            if (nombre === tabName) panel.removeAttribute('hidden');
+            else panel.setAttribute('hidden', 'until-found');
+          }
+          if (tabName === 'clasificacion') resaltarCoincidencias(els.tablaClasificacion, els.searchClasif.value);
+          else resaltarCoincidencias(els.tablaPartido, els.searchPartido.value);
+        };
 
-    function cambiarTab(tab, btn) {
-      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      document.getElementById('tab-clasificacion').classList.toggle('hidden', tab !== 'clasificacion');
-      document.getElementById('tab-partidos').classList.toggle('hidden', tab !== 'partidos');
-    }
+        const reducir = matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (!animar || tabName === tabActiva || typeof document.startViewTransition !== 'function' || reducir) {
+          aplicarCambio();
+          if (moverFoco && tabSeleccionada) tabSeleccionada.focus();
+          return;
+        }
 
-    function renderClasificacion() {
-      const mes = document.getElementById('selectMes').value;
-      const filtro = (document.getElementById('searchClasif').value || '').trim().toLowerCase();
-      const listaCompleta = (DATA.clasificaciones && DATA.clasificaciones[mes]) || [];
-      const cont = document.getElementById('tablaClasificacion');
-
-      document.getElementById('statParticipantes').innerText = listaCompleta.length;
-      document.getElementById('statAciertos').innerText = listaCompleta.reduce((s, r) => s + r.aciertos, 0);
-
-      if (listaCompleta.length === 0) {
-        cont.innerHTML = '<div class="empty">Aínda non hai participacións válidas neste mes.</div>';
-        return;
+        const t = document.startViewTransition(aplicarCambio);
+        if (moverFoco && tabSeleccionada) t.finished.finally(() => tabSeleccionada.focus());
       }
 
-      const medallas = ['🥇', '🥈', '🥉'];
-      const filas = listaCompleta
-        .map((r, i) => ({ ...r, pos: i < 3 && r.aciertos > 0 ? medallas[i] : (i + 1) }))
-        .filter(r => !filtro || r.nombre.toLowerCase().includes(filtro));
-
-      if (filas.length === 0) {
-        cont.innerHTML = '<div class="empty">Non se atopou ningún socio con ese nome.</div>';
-        return;
+      function celdaIcono(icono, texto) {
+        return el('td', { className: 'num' }, el('span', { role: 'img', 'aria-label': texto }, icono));
       }
 
-      let html = `<table><thead><tr>
-        <th style="width:42px">#</th><th>Socio</th><th class="num">Porras</th><th class="num">Acertos</th>
-      </tr></thead><tbody>`;
+      function renderClasificacion() {
+        const mes = els.selectMes.value;
+        const filtro = (els.searchClasif.value || '').trim().toLowerCase();
+        const listaCompleta = (DATA.clasificaciones && DATA.clasificaciones[mes]) || [];
 
-      filas.forEach(r => {
-        html += `<tr>
-          <td class="num">${r.pos}</td>
-          <td>${escapeHtml(r.nombre)}</td>
-          <td class="num">${r.partidos}</td>
-          <td class="num"><span class="acierto-badge">${r.aciertos}</span></td>
-        </tr>`;
+        els.statParticipantes.textContent = String(listaCompleta.length);
+        els.statAciertos.textContent = String(listaCompleta.reduce((s, r) => s + r.aciertos, 0));
+
+        if (listaCompleta.length === 0) {
+          els.tablaClasificacion.replaceChildren(el('div', { className: 'empty' }, 'Aínda non hai participacións válidas neste mes.'));
+          if (tabActiva === 'clasificacion') resaltarCoincidencias(null, '');
+          return;
+        }
+
+        const filas = listaCompleta
+          .map((r, i) => ({ ...r, indiceOriginal: i }))
+          .filter(r => !filtro || r.nombre.toLowerCase().includes(filtro));
+
+        if (filas.length === 0) {
+          els.tablaClasificacion.replaceChildren(el('div', { className: 'empty' }, 'Non se atopou ningún socio con ese nome.'));
+          if (tabActiva === 'clasificacion') resaltarCoincidencias(null, '');
+          return;
+        }
+
+        const medallas = [['🥇', '1.º'], ['🥈', '2.º'], ['🥉', '3.º']];
+        const rows = filas.map(r => {
+          const i = r.indiceOriginal;
+          const esLider = i === 0 && r.aciertos > 0;
+          const posCell = i < 3 && r.aciertos > 0 ? celdaIcono(medallas[i][0], medallas[i][1]) : el('td', { className: 'num' }, i + 1);
+          return el(
+            'tr', esLider ? { className: 'lider' } : null,
+            posCell,
+            el('th', { scope: 'row' }, r.nombre),
+            el('td', { className: 'num' }, r.partidos),
+            el('td', { className: 'num' }, el('span', { className: 'acierto-badge' }, r.aciertos))
+          );
+        });
+
+        const captionText = mes ? 'Clasificación mensual de ' + formatearMes(mes) : 'Clasificación mensual';
+        els.tablaClasificacion.replaceChildren(crearTabla(
+          'caption-clasificacion', captionText,
+          [{ texto: '#', cls: 'col-pos num' }, { texto: 'Socio' }, { texto: 'Porras', cls: 'num' }, { texto: 'Acertos', cls: 'num' }],
+          rows
+        ));
+        if (tabActiva === 'clasificacion') resaltarCoincidencias(els.tablaClasificacion, filtro);
+      }
+
+      function renderPartido() {
+        const nombrePartido = els.selectPartido.value;
+        const filtro = (els.searchPartido.value || '').trim().toLowerCase();
+        const partidoObj = DATA.partidos.find(p => p.nombre === nombrePartido);
+
+        if (!partidoObj) {
+          els.marcadorBox.hidden = true;
+          els.tablaPartido.replaceChildren(el('div', { className: 'empty' }, 'Selecciona un partido.'));
+          if (tabActiva === 'partidos') resaltarCoincidencias(null, '');
+          return;
+        }
+
+        els.marcadorBox.hidden = false;
+        if (!partidoObj.iniciado) {
+          els.marcadorBox.textContent = 'Comezo: ' + partidoObj.fechaTexto;
+          const n = partidoObj.totalPorras || 0;
+          const txtPorras = n === 1 ? 'Hai 1 porra rexistrada.' : 'Hai ' + n + ' porras rexistradas.';
+          els.tablaPartido.replaceChildren(el(
+            'div', { className: 'locked-box' },
+            el('div', { className: 'lock-icon', 'aria-hidden': 'true' }, '🔒'),
+            el('strong', null, 'Pronósticos ocultos ata o inicio do partido'),
+            el('p', null, txtPorras + ' Poderanse ver a partir do ' + partidoObj.fechaTexto + '.')
+          ));
+          if (tabActiva === 'partidos') resaltarCoincidencias(null, '');
+          return;
+        }
+
+        els.marcadorBox.textContent = partidoObj.jugado
+          ? 'Resultado oficial: ' + partidoObj.golesLocalReal + ' - ' + partidoObj.golesVisitanteReal
+          : 'Partido iniciado · Pendente de resultado oficial';
+
+        const lista = ((DATA.porrasPorPartido && DATA.porrasPorPartido[nombrePartido]) || [])
+          .filter(r => !filtro || r.nombre.toLowerCase().includes(filtro));
+
+        if (lista.length === 0) {
+          els.tablaPartido.replaceChildren(el('div', { className: 'empty' }, 'Non hai porras rexistradas para mostrar.'));
+          if (tabActiva === 'partidos') resaltarCoincidencias(null, '');
+          return;
+        }
+
+        const rows = lista.map(r => {
+          const estadoCell = partidoObj.jugado
+            ? celdaIcono(r.acierto === 1 ? '✅' : '❌', r.acierto === 1 ? 'Acerto' : 'Fallo')
+            : celdaIcono('⏳', 'Pendente');
+          return el('tr', null, el('th', { scope: 'row' }, r.nombre), el('td', { className: 'num' }, r.golesLocal + ' - ' + r.golesVisitante), estadoCell);
+        });
+
+        els.tablaPartido.replaceChildren(crearTabla(
+          'caption-partido', 'Porras do partido ' + partidoObj.nombre,
+          [{ texto: 'Socio' }, { texto: 'Pronóstico', cls: 'num' }, { texto: 'Estado', cls: 'num' }],
+          rows
+        ));
+        if (tabActiva === 'partidos') resaltarCoincidencias(els.tablaPartido, filtro);
+      }
+
+      els.loginForm.addEventListener('submit', e => {
+        e.preventDefault();
+        const clave = els.inputClave.value.trim();
+        if (!clave) {
+          mostrarErroLogin('Introduce a clave da peña.');
+          els.inputClave.focus();
+          return;
+        }
+        limparErroLogin();
+        cargarConClave(clave, { enSegundoPlano: false, bajaPrioridad: false });
       });
-      html += '</tbody></table>';
-      cont.innerHTML = html;
-    }
 
-    function renderPartido() {
-      const nombrePartido = document.getElementById('selectPartido').value;
-      const filtro = (document.getElementById('searchPartido').value || '').trim().toLowerCase();
-      const partidoObj = DATA.partidos.find(p => p.nombre === nombrePartido);
-      const marcadorBox = document.getElementById('marcadorBox');
-      const cont = document.getElementById('tablaPartido');
+      els.inputClave.addEventListener('input', () => { if (!els.loginError.hidden) limparErroLogin(); });
+      els.selectMes.addEventListener('change', renderClasificacion);
+      els.searchClasif.addEventListener('input', renderClasificacion);
+      els.selectPartido.addEventListener('change', renderPartido);
+      els.searchPartido.addEventListener('input', renderPartido);
 
-      if (!partidoObj) {
-        marcadorBox.classList.add('hidden');
-        cont.innerHTML = '<div class="empty">Selecciona un partido.</div>';
-        return;
-      }
+      for (const tab of els.tabs) tab.addEventListener('click', () => activarTab(tab.dataset.tab));
 
-      marcadorBox.classList.remove('hidden');
-
-      if (!partidoObj.iniciado) {
-        marcadorBox.innerText = `Comezo: ${partidoObj.fechaTexto}`;
-        const n = partidoObj.totalPorras || 0;
-        const txtPorras = n === 1 ? 'Hai 1 porra rexistrada.' : `Hai ${n} porras rexistradas.`;
-        cont.innerHTML = `
-          <div class="locked-box">
-            <div class="lock-icon">🔒</div>
-            <strong>Pronósticos ocultos ata o inicio do partido</strong>
-            <p>${txtPorras} Poderanse ver a partir do ${partidoObj.fechaTexto}.</p>
-          </div>`;
-        return;
-      }
-
-      marcadorBox.innerText = partidoObj.jugado
-        ? `Resultado oficial: ${partidoObj.golesLocalReal} - ${partidoObj.golesVisitanteReal}`
-        : 'Partido iniciado · Pendente de resultado oficial';
-
-      const lista = ((DATA.porrasPorPartido && DATA.porrasPorPartido[nombrePartido]) || [])
-        .filter(r => !filtro || r.nombre.toLowerCase().includes(filtro));
-
-      if (lista.length === 0) {
-        cont.innerHTML = '<div class="empty">Non hai porras rexistradas para mostrar.</div>';
-        return;
-      }
-
-      let html = `<table><thead><tr>
-        <th>Socio</th><th class="num">Pronóstico</th><th class="num">Estado</th>
-      </tr></thead><tbody>`;
-
-      lista.forEach(r => {
-        let estado = '⏳';
-        if (partidoObj.jugado) estado = r.acierto === 1 ? '✅' : '❌';
-        html += `<tr>
-          <td>${escapeHtml(r.nombre)}</td>
-          <td class="num">${r.golesLocal} - ${r.golesVisitante}</td>
-          <td class="num">${estado}</td>
-        </tr>`;
+      els.tablist.addEventListener('keydown', e => {
+        const idx = els.tabs.indexOf(document.activeElement);
+        if (idx === -1) return;
+        let nextIdx = null;
+        if (e.key === 'ArrowRight') nextIdx = (idx + 1) % els.tabs.length;
+        else if (e.key === 'ArrowLeft') nextIdx = (idx - 1 + els.tabs.length) % els.tabs.length;
+        else if (e.key === 'Home') nextIdx = 0;
+        else if (e.key === 'End') nextIdx = els.tabs.length - 1;
+        if (nextIdx !== null) {
+          e.preventDefault();
+          activarTab(els.tabs[nextIdx].dataset.tab, { moverFoco: true });
+        }
       });
-      html += '</tbody></table>';
-      cont.innerHTML = html;
-    }
 
-    function escapeHtml(str) {
-      return String(str).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-    }
+      for (const [nombre, panel] of els.panels.entries()) {
+        panel.addEventListener('beforematch', () => activarTab(nombre, { animar: false }));
+      }
+
+      const claveGuardada = localStorage.getItem(STORAGE_CLAVE);
+      if (claveGuardada) {
+        let cacheValida = null;
+        try {
+          const raw = localStorage.getItem(STORAGE_CACHE);
+          if (raw) cacheValida = JSON.parse(raw);
+        } catch {}
+        if (cacheValida && cacheValida.meses) {
+          inicializar(cacheValida);
+          cargarConClave(claveGuardada, { enSegundoPlano: true, bajaPrioridad: true });
+        } else {
+          cargarConClave(claveGuardada, { enSegundoPlano: false, bajaPrioridad: false });
+        }
+      } else {
+        els.loginBox.hidden = false;
+      }
+    })();
   </script>
 </body>
 </html>
